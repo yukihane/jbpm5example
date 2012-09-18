@@ -53,12 +53,12 @@
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>knowledge-api</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-core</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.mvel</groupId>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-compiler</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt.core.compiler</groupId>
@@ -98,12 +98,12 @@
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-decisiontables</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-templates</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jexcelapi</groupId>
@@ -115,43 +115,43 @@
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-flow</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-flow-builder</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
 
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-bam</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-bpmn2</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
-      <artifactId>jbpm-human-task</artifactId>
-      <version>5.3.0.BRMS</version>
+      <artifactId>jbpm-human-task-core</artifactId>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-persistence-jpa</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-workitems</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-persistence-jpa</artifactId>
-      <version>5.3.0.BRMS</version>
+      <version>5.3.0.Final</version>
     </dependency>
     <dependency>
   <groupId>com.google.protobuf</groupId>

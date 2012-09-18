@@ -130,7 +130,7 @@
             </jarModule>
             <jarModule>
               <groupId>org.jbpm</groupId>
-              <artifactId>jbpm-human-task</artifactId>
+              <artifactId>jbpm-human-task-core</artifactId>
               <includeInApplicationXml>true</includeInApplicationXml>
               <bundleDir>/lib</bundleDir>
             </jarModule>
