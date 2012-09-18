@@ -13,12 +13,25 @@
         <module>ear</module>
     </modules>
 
+    <properties>
+        <jbpm.version>5.3.0.Final</jbpm.version>
+    </properties>
+
     <build>
         <pluginManagement>
         </pluginManagement>
     </build>
 
     <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jbpm</groupId>
+                <artifactId>jbpm</artifactId>
+                <version>${jbpm.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
     
     <pluginRepositories>
