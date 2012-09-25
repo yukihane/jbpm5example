@@ -14,9 +14,18 @@
     </modules>
 
     <properties>
-        <jbpm.version>5.3.0.Final</jbpm.version>
+        <jbpm.version>5.4.0-SNAPSHOT</jbpm.version>
         <jpa.version>2.0.0</jpa.version>
     </properties>
+
+    <repositories>
+      <repository>
+        <id>repository.jboss.org</id>
+        <name>JBoss Repository</name>
+        <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      </repository>
+    </repositories>
+
 
     <build>
         <pluginManagement>
