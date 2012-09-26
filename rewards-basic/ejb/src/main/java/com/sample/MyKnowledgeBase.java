@@ -18,7 +18,6 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
-import org.jbpm.process.workitem.wsht.SyncWSHumanTaskHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
@@ -60,13 +59,6 @@ public class MyKnowledgeBase {
                 SystemEventListenerFactory.getSystemEventListener());
 
         LocalTaskService taskClient = new LocalTaskService(taskService);
-
-        SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
-                taskClient, ksession);
-        humanTaskHandler.setLocal(true);
-        humanTaskHandler.connect();
-        ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
-                humanTaskHandler);
 
         return new ClientSession(taskClient, ksession);
     }
