@@ -3,6 +3,7 @@ package com.sample;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
@@ -26,15 +27,14 @@ import org.jbpm.task.service.local.LocalTaskService;
 @Stateless
 public class TaskBean implements TaskLocal {
 
-    private static KnowledgeBase kbase;
-
     @PersistenceUnit(unitName = "org.jbpm.persistence.jpa")
     private EntityManagerFactory emf;
 
+    @Inject
+    private MyKnowledgeBase myKnowledgeBase;
+
     public List<TaskSummary> retrieveTaskList(String actorId) throws Exception {
 
-        kbase = readKnowledgeBase();
-        
         StatefulKnowledgeSession ksession = createKnowledgeSession();
         TaskService localTaskService = getTaskService(ksession);
 
@@ -51,8 +51,6 @@ public class TaskBean implements TaskLocal {
 
     public void approveTask(String actorId, long taskId) throws Exception {
 
-        kbase = readKnowledgeBase();
-        
         StatefulKnowledgeSession ksession = createKnowledgeSession();
         TaskService localTaskService = getTaskService(ksession);
 
@@ -67,6 +65,7 @@ public class TaskBean implements TaskLocal {
         Environment env = KnowledgeBaseFactory.newEnvironment();
         env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
 
+        KnowledgeBase kbase = myKnowledgeBase.readKnowledgeBase();
         StatefulKnowledgeSession ksession = JPAKnowledgeService
                 .newStatefulKnowledgeSession(kbase, null, env);
 
@@ -91,18 +90,4 @@ public class TaskBean implements TaskLocal {
 
         return localTaskService;
     }
-    
-    private static KnowledgeBase readKnowledgeBase() throws Exception {
-        
-        if (kbase != null) {
-            return kbase;
-        }
-        
-        KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-                .newKnowledgeBuilder();
-        kbuilder.add(ResourceFactory.newClassPathResource("rewards-basic.bpmn"),
-                ResourceType.BPMN2);
-        return kbuilder.newKnowledgeBase();
-    }
-
 }
