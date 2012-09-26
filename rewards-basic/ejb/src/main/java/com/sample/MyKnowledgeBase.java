@@ -20,6 +20,7 @@ import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.SyncWSHumanTaskHandler;
+import org.jbpm.task.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
 @Singleton
@@ -69,6 +70,24 @@ public class MyKnowledgeBase {
                 humanTaskHandler);
 
         return ksession;
+    }
+
+    public TaskService getTaskService() {
+        StatefulKnowledgeSession ksession = createKnowledgeSession();
+
+        org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
+                emf, SystemEventListenerFactory.getSystemEventListener());
+
+        LocalTaskService localTaskService = new LocalTaskService(taskService);
+
+        SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
+                localTaskService, ksession);
+        humanTaskHandler.setLocal(true);
+        humanTaskHandler.connect();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
+                humanTaskHandler);
+
+        return localTaskService;
     }
 
 }
