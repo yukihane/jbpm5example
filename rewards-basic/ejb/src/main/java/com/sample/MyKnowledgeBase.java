@@ -41,7 +41,7 @@ public class MyKnowledgeBase {
         kbase = kbuilder.newKnowledgeBase();
     }
 
-    private StatefulKnowledgeSession createKnowledgeSessionInternal() {
+    private StatefulKnowledgeSession createKnowledgeSession() {
         Environment env = KnowledgeBaseFactory.newEnvironment();
         env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
 
@@ -54,21 +54,21 @@ public class MyKnowledgeBase {
     }
 
     public ClientSession createSession() {
-        StatefulKnowledgeSession ksession = createKnowledgeSessionInternal();
+        StatefulKnowledgeSession ksession = createKnowledgeSession();
 
         TaskService taskService = new TaskService(emf,
                 SystemEventListenerFactory.getSystemEventListener());
 
-        LocalTaskService localTaskService = new LocalTaskService(taskService);
+        LocalTaskService taskClient = new LocalTaskService(taskService);
 
         SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
-                localTaskService, ksession);
+                taskClient, ksession);
         humanTaskHandler.setLocal(true);
         humanTaskHandler.connect();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
                 humanTaskHandler);
 
-        return new ClientSession(localTaskService, ksession);
+        return new ClientSession(taskClient, ksession);
     }
 
     public static class ClientSession {
@@ -87,11 +87,6 @@ public class MyKnowledgeBase {
 
         public StatefulKnowledgeSession getKnowledgeSession() {
             return knowledgeSession;
-        }
-
-        public void dispose() {
-            taskClient.dispose();
-            knowledgeSession.dispose();
         }
     }
 }
