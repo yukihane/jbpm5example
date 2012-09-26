@@ -16,7 +16,7 @@ public class TaskBean implements TaskLocal {
 
     public List<TaskSummary> retrieveTaskList(String actorId) throws Exception {
 
-        TaskService localTaskService = myKnowledgeBase.getTaskService();
+        TaskService localTaskService = myKnowledgeBase.getTaskClient();
 
         List<TaskSummary> list = localTaskService
                 .getTasksAssignedAsPotentialOwner(actorId, "en-UK");
@@ -31,7 +31,7 @@ public class TaskBean implements TaskLocal {
 
     public void approveTask(String actorId, long taskId) throws Exception {
 
-        TaskService localTaskService = myKnowledgeBase.getTaskService();
+        TaskService localTaskService = myKnowledgeBase.getTaskClient();
 
         System.out.println("approveTask (taskId = " + taskId + ") by " + actorId);
         localTaskService.start(taskId, actorId);

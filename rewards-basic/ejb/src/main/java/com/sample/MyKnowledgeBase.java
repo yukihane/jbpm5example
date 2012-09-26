@@ -13,7 +13,6 @@ import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
-import org.drools.marshalling.impl.ProtobufMessages.KnowledgeSession;
 import org.drools.persistence.jpa.JPAKnowledgeService;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
@@ -42,7 +41,7 @@ public class MyKnowledgeBase {
         kbase = kbuilder.newKnowledgeBase();
     }
 
-    private StatefulKnowledgeSession createSession() {
+    private StatefulKnowledgeSession createKnowledgeSessionInternal() {
         Environment env = KnowledgeBaseFactory.newEnvironment();
         env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
 
@@ -55,7 +54,15 @@ public class MyKnowledgeBase {
     }
 
     public StatefulKnowledgeSession createKnowledgeSession() {
-        StatefulKnowledgeSession ksession = createSession();
+        return internalMethod().getKsession();
+    }
+
+    public TaskService getTaskClient() {
+        return internalMethod().getTaskClient();
+    }
+
+    private ClientSession internalMethod() {
+        StatefulKnowledgeSession ksession = createKnowledgeSessionInternal();
 
         org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
                 emf, SystemEventListenerFactory.getSystemEventListener());
@@ -69,25 +76,25 @@ public class MyKnowledgeBase {
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
                 humanTaskHandler);
 
-        return ksession;
+        return new ClientSession(localTaskService, ksession);
     }
 
-    public TaskService getTaskService() {
-        StatefulKnowledgeSession ksession = createKnowledgeSession();
+    private static class ClientSession {
+        private final LocalTaskService taskClient;
+        private final StatefulKnowledgeSession ksession;
 
-        org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
-                emf, SystemEventListenerFactory.getSystemEventListener());
+        public ClientSession(LocalTaskService taskClient,
+                StatefulKnowledgeSession ksession) {
+            this.taskClient = taskClient;
+            this.ksession = ksession;
+        }
 
-        LocalTaskService localTaskService = new LocalTaskService(taskService);
+        public LocalTaskService getTaskClient() {
+            return taskClient;
+        }
 
-        SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
-                localTaskService, ksession);
-        humanTaskHandler.setLocal(true);
-        humanTaskHandler.connect();
-        ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
-                humanTaskHandler);
-
-        return localTaskService;
+        public StatefulKnowledgeSession getKsession() {
+            return ksession;
+        }
     }
-
 }
