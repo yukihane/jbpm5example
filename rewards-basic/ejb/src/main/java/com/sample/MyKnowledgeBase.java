@@ -41,20 +41,20 @@ public class MyKnowledgeBase {
         kbase = kbuilder.newKnowledgeBase();
     }
 
-    public StatefulKnowledgeSession createSession() {
+    private StatefulKnowledgeSession createSession() {
         Environment env = KnowledgeBaseFactory.newEnvironment();
         env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
 
         StatefulKnowledgeSession ksession = JPAKnowledgeService
                 .newStatefulKnowledgeSession(kbase, null, env);
 
+        new JPAWorkingMemoryDbLogger(ksession);
+
         return ksession;
     }
 
     public StatefulKnowledgeSession createKnowledgeSession() {
         StatefulKnowledgeSession ksession = createSession();
-
-        new JPAWorkingMemoryDbLogger(ksession);
 
         org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
                 emf, SystemEventListenerFactory.getSystemEventListener());

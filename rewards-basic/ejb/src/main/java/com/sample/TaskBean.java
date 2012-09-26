@@ -62,9 +62,7 @@ public class TaskBean implements TaskLocal {
     }
 
     private StatefulKnowledgeSession createKnowledgeSession() {
-        StatefulKnowledgeSession ksession = myKnowledgeBase.createSession();
-
-        new JPAWorkingMemoryDbLogger(ksession);
+        StatefulKnowledgeSession ksession = myKnowledgeBase.createKnowledgeSession();
 
         return ksession;
     }
