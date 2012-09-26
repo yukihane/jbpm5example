@@ -35,8 +35,7 @@ public class TaskBean implements TaskLocal {
 
     public List<TaskSummary> retrieveTaskList(String actorId) throws Exception {
 
-        StatefulKnowledgeSession ksession = createKnowledgeSession();
-        TaskService localTaskService = getTaskService(ksession);
+        TaskService localTaskService = getTaskService();
 
         List<TaskSummary> list = localTaskService
                 .getTasksAssignedAsPotentialOwner(actorId, "en-UK");
@@ -51,8 +50,7 @@ public class TaskBean implements TaskLocal {
 
     public void approveTask(String actorId, long taskId) throws Exception {
 
-        StatefulKnowledgeSession ksession = createKnowledgeSession();
-        TaskService localTaskService = getTaskService(ksession);
+        TaskService localTaskService = getTaskService();
 
         System.out.println("approveTask (taskId = " + taskId + ") by " + actorId);
         localTaskService.start(taskId, actorId);
@@ -61,13 +59,8 @@ public class TaskBean implements TaskLocal {
         return;
     }
 
-    private StatefulKnowledgeSession createKnowledgeSession() {
+    public TaskService getTaskService() {
         StatefulKnowledgeSession ksession = myKnowledgeBase.createKnowledgeSession();
-
-        return ksession;
-    }
-
-    public TaskService getTaskService(StatefulKnowledgeSession ksession) {
 
         org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
                 emf, SystemEventListenerFactory.getSystemEventListener());
