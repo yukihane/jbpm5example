@@ -62,12 +62,7 @@ public class TaskBean implements TaskLocal {
     }
 
     private StatefulKnowledgeSession createKnowledgeSession() {
-        Environment env = KnowledgeBaseFactory.newEnvironment();
-        env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
-
-        KnowledgeBase kbase = myKnowledgeBase.readKnowledgeBase();
-        StatefulKnowledgeSession ksession = JPAKnowledgeService
-                .newStatefulKnowledgeSession(kbase, null, env);
+        StatefulKnowledgeSession ksession = myKnowledgeBase.createSession();
 
         new JPAWorkingMemoryDbLogger(ksession);
 
