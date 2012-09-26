@@ -19,7 +19,7 @@ import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.SyncWSHumanTaskHandler;
-import org.jbpm.task.TaskService;
+import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
 @Singleton
@@ -53,19 +53,11 @@ public class MyKnowledgeBase {
         return ksession;
     }
 
-    public StatefulKnowledgeSession createKnowledgeSession() {
-        return internalMethod().getKsession();
-    }
-
-    public TaskService getTaskClient() {
-        return internalMethod().getTaskClient();
-    }
-
-    private ClientSession internalMethod() {
+    public ClientSession createSession() {
         StatefulKnowledgeSession ksession = createKnowledgeSessionInternal();
 
-        org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
-                emf, SystemEventListenerFactory.getSystemEventListener());
+        TaskService taskService = new TaskService(emf,
+                SystemEventListenerFactory.getSystemEventListener());
 
         LocalTaskService localTaskService = new LocalTaskService(taskService);
 
@@ -79,22 +71,27 @@ public class MyKnowledgeBase {
         return new ClientSession(localTaskService, ksession);
     }
 
-    private static class ClientSession {
+    public static class ClientSession {
         private final LocalTaskService taskClient;
-        private final StatefulKnowledgeSession ksession;
+        private final StatefulKnowledgeSession knowledgeSession;
 
-        public ClientSession(LocalTaskService taskClient,
+        private ClientSession(LocalTaskService taskClient,
                 StatefulKnowledgeSession ksession) {
             this.taskClient = taskClient;
-            this.ksession = ksession;
+            this.knowledgeSession = ksession;
         }
 
         public LocalTaskService getTaskClient() {
             return taskClient;
         }
 
-        public StatefulKnowledgeSession getKsession() {
-            return ksession;
+        public StatefulKnowledgeSession getKnowledgeSession() {
+            return knowledgeSession;
+        }
+
+        public void dispose() {
+            taskClient.dispose();
+            knowledgeSession.dispose();
         }
     }
 }
