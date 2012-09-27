@@ -27,9 +27,9 @@ public class TaskServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String cmd = req.getParameter("cmd");
-        String user = req.getParameter("user");
 
         if (cmd.equals("list")) {
+            String user = req.getParameter("user");
             List<TaskSummary> taskList;
             try {
                 taskList = taskService.retrieveTaskList(user);
@@ -43,14 +43,16 @@ public class TaskServlet extends HttpServlet {
             dispatcher.forward(req, res);
             return;
         } else if (cmd.equals("approve")) {
+            final String loginUser = (String) req.getSession().getAttribute("loginName");
+
             long taskId = Long.parseLong(req.getParameter("taskId"));
             try {
-                taskService.approveTask(user, taskId);
+                taskService.approveTask(loginUser, taskId);
             } catch (Exception e) {
                 throw new ServletException(e);
             }
             req.setAttribute("message", "Task (id = " + taskId
-                    + ") has been completed by " + user);
+                    + ") has been completed by " + loginUser);
             ServletContext context = this.getServletContext();
             RequestDispatcher dispatcher = context
                     .getRequestDispatcher("/index.jsp");
