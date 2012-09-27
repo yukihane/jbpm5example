@@ -17,7 +17,7 @@ public class ProcessBean implements ProcessLocal {
 
     public long startProcess(String recipient) throws Exception {
 
-        StatefulKnowledgeSession ksession = myKnowledgeBase.createSession().getKnowledgeSession();
+        StatefulKnowledgeSession ksession = myKnowledgeBase.createCommunicationPath().getKnowledgeSession();
 
         // start a new process instance
         Map<String, Object> params = new HashMap<String, Object>();

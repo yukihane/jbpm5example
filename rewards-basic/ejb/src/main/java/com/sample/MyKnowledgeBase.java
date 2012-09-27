@@ -53,36 +53,36 @@ public class MyKnowledgeBase {
         return ksession;
     }
 
-    public ClientSession createSession() {
+    public CommunicationPath createCommunicationPath() {
         StatefulKnowledgeSession ksession = createKnowledgeSession();
 
         TaskService taskService = new TaskService(emf,
                 SystemEventListenerFactory.getSystemEventListener());
 
-        LocalTaskService taskClient = new LocalTaskService(taskService);
+        LocalTaskService lts = new LocalTaskService(taskService);
 
         SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
-                taskClient, ksession);
+                lts, ksession);
         humanTaskHandler.setLocal(true);
         humanTaskHandler.connect();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
                 humanTaskHandler);
 
-        return new ClientSession(taskClient, ksession);
+        return new CommunicationPath(lts, ksession);
     }
 
-    public static class ClientSession {
-        private final LocalTaskService taskClient;
+    public static class CommunicationPath {
+        private final LocalTaskService taskService;
         private final StatefulKnowledgeSession knowledgeSession;
 
-        private ClientSession(LocalTaskService taskClient,
+        private CommunicationPath(LocalTaskService taskService,
                 StatefulKnowledgeSession ksession) {
-            this.taskClient = taskClient;
+            this.taskService = taskService;
             this.knowledgeSession = ksession;
         }
 
-        public LocalTaskService getTaskClient() {
-            return taskClient;
+        public LocalTaskService getTaskService() {
+            return taskService;
         }
 
         public StatefulKnowledgeSession getKnowledgeSession() {
