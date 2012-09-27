@@ -21,35 +21,33 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         final String name = req.getParameter("name");
         final HttpSession session = req.getSession();
-        ServletContext context = this.getServletContext();
 
         if ("john".equals(name)) {
             session.setAttribute("loginName", "john");
 
-            RequestDispatcher dispatcher = context
-                    .getRequestDispatcher("/index.jsp");
-            dispatcher.forward(req, res);
+            res.sendRedirect("index.jsp");
             return;
         } else if ("mary".equals(name)) {
             session.setAttribute("loginName", "mary");
 
-            RequestDispatcher dispatcher = context
-                    .getRequestDispatcher("/index.jsp");
-            dispatcher.forward(req, res);
+            res.sendRedirect("index.jsp");
             return;
         } else if ("Administrator".equals(name)) {
             session.setAttribute("loginName", "Administrator");
 
-            RequestDispatcher dispatcher = context
-                    .getRequestDispatcher("/index.jsp");
-            dispatcher.forward(req, res);
+            res.sendRedirect("index.jsp");
             return;
         } else {
-            RequestDispatcher dispatcher = context
-                    .getRequestDispatcher("/login.jsp");
-            dispatcher.forward(req, res);
+            req.setAttribute("message", "incorrect name.");
+            res.sendRedirect("login.jsp");
             return;
         }
+    }
+    
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect("login.jsp");
     }
 
 }

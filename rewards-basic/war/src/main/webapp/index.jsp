@@ -4,6 +4,7 @@
 </head>
 <body>
 <p>Rewards Basic example</p>
+<p>Hello, <%= request.getSession().getAttribute("loginName") %> </p>
 <p><%= request.getAttribute("message") == null ? "" : request.getAttribute("message") %></p>
 <ul>
 <li><a href="startProcess.jsp">Start Reward Process</a></li>

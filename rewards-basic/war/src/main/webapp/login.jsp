@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Login - Rewards Basic example</title>
 </head>
 <body>
-    <%=request.getAttribute("message")%>
+<p><%= request.getAttribute("message") == null ? "" : request.getAttribute("message") %></p>
     <FORM method="POST" action="login">
         <INPUT type="text" name="name"/> <INPUT type="SUBMIT"
             value="ログイン" />
