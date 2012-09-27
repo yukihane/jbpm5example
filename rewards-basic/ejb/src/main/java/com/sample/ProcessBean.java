@@ -15,15 +15,13 @@ public class ProcessBean implements ProcessLocal {
     @Inject
     private MyKnowledgeBase myKnowledgeBase;
 
-    public long startProcess(String recipient) throws Exception {
+    public long startProcess() throws Exception {
 
         StatefulKnowledgeSession ksession = myKnowledgeBase.createCommunicationPath().getKnowledgeSession();
 
         // start a new process instance
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("recipient", recipient);
         ProcessInstance processInstance = ksession.startProcess(
-                "com.sample.rewards-basic", params);
+                "com.sample.rewards-basic");
 
         long processInstanceId = processInstance.getId();
 

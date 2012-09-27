@@ -23,11 +23,9 @@ public class ProcessServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         
-        String recipient = req.getParameter("recipient");
-
         long processInstanceId = -1;
         try {
-            processInstanceId = processService.startProcess(recipient);
+            processInstanceId = processService.startProcess();
         } catch (Exception e) {
             throw new ServletException(e);
         }
