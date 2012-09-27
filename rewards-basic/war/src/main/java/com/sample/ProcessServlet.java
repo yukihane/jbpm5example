@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sample.entity.MyContent;
+
 @WebServlet(urlPatterns="/process")
 public class ProcessServlet extends HttpServlet {
 
@@ -25,7 +27,12 @@ public class ProcessServlet extends HttpServlet {
         
         long processInstanceId = -1;
         try {
-            processInstanceId = processService.startProcess();
+            final String loginUser = (String) req.getSession().getAttribute("loginName");
+            final String message = req.getParameter("message");
+            final MyContent cont = new MyContent();
+            cont.setMessage(message);
+            
+            processInstanceId = processService.createContent(loginUser, cont);
         } catch (Exception e) {
             throw new ServletException(e);
         }
