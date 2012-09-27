@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jbpm.task.query.TaskSummary;
 
+import com.sample.TaskBean.MyTask;
+
 @WebServlet(urlPatterns="/task")
 public class TaskServlet extends HttpServlet {
 
@@ -30,12 +32,9 @@ public class TaskServlet extends HttpServlet {
 
         if (cmd.equals("list")) {
             String user = req.getParameter("user");
-            List<TaskSummary> taskList;
-            try {
-                taskList = taskService.retrieveTaskList(user);
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
+
+            final List<MyTask> taskList = taskService.retrieveTaskList(user);
+
             req.setAttribute("taskList", taskList);
             ServletContext context = this.getServletContext();
             RequestDispatcher dispatcher = context

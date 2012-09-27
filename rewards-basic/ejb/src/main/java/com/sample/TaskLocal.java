@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import org.jbpm.task.query.TaskSummary;
+import com.sample.TaskBean.MyTask;
 
 
 @Local
 public interface TaskLocal
 {
-    public List<TaskSummary> retrieveTaskList(String actorId) throws Exception;
+    public List<MyTask> retrieveTaskList(String actorId);
     public void approveTask(String actorId, long taskId) throws Exception;
 }
