@@ -27,6 +27,7 @@ import org.jbpm.task.service.local.LocalTaskService;
 public class ProcessBean implements ProcessLocal {
 
     private static KnowledgeBase kbase;
+    private static int seq = 0;
 
     @PersistenceUnit(unitName = "org.jbpm.persistence.jpa")
     private EntityManagerFactory emf;
@@ -40,7 +41,8 @@ public class ProcessBean implements ProcessLocal {
 
         // start a new process instance
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("recipient", recipient);
+        params.put("recipient", recipient + seq);
+        seq++;
         ProcessInstance processInstance = ksession.startProcess(
                 "com.sample.rewards-basic", params);
 
