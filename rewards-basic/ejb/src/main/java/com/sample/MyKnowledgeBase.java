@@ -1,11 +1,15 @@
 package com.sample;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
+import org.apache.commons.exec.util.StringUtils;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
@@ -16,7 +20,10 @@ import org.drools.io.ResourceFactory;
 import org.drools.persistence.jpa.JPAKnowledgeService;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
+import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.WorkItem;
+import org.drools.runtime.process.WorkItemManager;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.service.TaskService;
@@ -65,8 +72,7 @@ public class MyKnowledgeBase {
         // http://stackoverflow.com/questions/10815779/local-human-task-service-jbpm
         // https://community.jboss.org/thread/204619
         // 5.4.0ではLocalHTWorkItemHandlerというものがあるのでこれを使う
-        LocalHTWorkItemHandler humanTaskHandler = new LocalHTWorkItemHandler(
-                lts, ksession);
+        LocalHTWorkItemHandler humanTaskHandler = new MyHandler(lts, ksession);
         humanTaskHandler.setLocal(true);
         humanTaskHandler.connect();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
@@ -91,6 +97,23 @@ public class MyKnowledgeBase {
 
         public StatefulKnowledgeSession getKnowledgeSession() {
             return knowledgeSession;
+        }
+    }
+
+    private class MyHandler extends LocalHTWorkItemHandler {
+
+        public MyHandler(org.jbpm.task.TaskService client,
+                KnowledgeRuntime session) {
+            super(client, session);
+        }
+
+        @Override
+        public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
+            Map<String, Object> params = workItem.getParameters();
+            System.out.println("params: " + params);
+            Map<String, Object> results = workItem.getResults();
+            System.out.println("results: " + results);
+            super.executeWorkItem(workItem, manager);
         }
     }
 }
