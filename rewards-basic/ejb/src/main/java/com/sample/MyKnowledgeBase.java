@@ -18,7 +18,7 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
-import org.jbpm.process.workitem.wsht.SyncWSHumanTaskHandler;
+import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
 
@@ -64,7 +64,8 @@ public class MyKnowledgeBase {
         // deprecated だけれども5.3.0では代替クラスが無いので仕方ない
         // http://stackoverflow.com/questions/10815779/local-human-task-service-jbpm
         // https://community.jboss.org/thread/204619
-        SyncWSHumanTaskHandler humanTaskHandler = new SyncWSHumanTaskHandler(
+        // 5.4.0ではLocalHTWorkItemHandlerというものがあるのでこれを使う
+        LocalHTWorkItemHandler humanTaskHandler = new LocalHTWorkItemHandler(
                 lts, ksession);
         humanTaskHandler.setLocal(true);
         humanTaskHandler.connect();
