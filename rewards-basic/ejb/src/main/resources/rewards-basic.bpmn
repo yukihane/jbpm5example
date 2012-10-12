@@ -12,7 +12,11 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
+  <itemDefinition id="contentIdType" structureRef="java.lang.Long" />
+
   <process processType="Private" isExecutable="true" id="com.sample.rewards-basic" name="Rewards Basic" tns:packageName="com.sample" >
+    <!-- process variables -->
+    <property id="myContentId" itemSubjectRef="contentIdType"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="Start" />
@@ -27,6 +31,7 @@
         <dataInput id="_4_TaskNameInput" name="TaskName" />
         <dataInput id="_4_GroupIdInput" name="GroupId" />
         <dataInput id="_4_PriorityInput" name="Priority" />
+        <dataOutput id="_4_MyContentIdOutput" name="myContentId" />
         <inputSet>
           <dataInputRefs>_4_CommentInput</dataInputRefs>
           <dataInputRefs>_4_SkippableInput</dataInputRefs>
@@ -36,6 +41,7 @@
           <dataInputRefs>_4_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
+          <dataOutputRefs>_4_MyContentIdOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
@@ -80,6 +86,10 @@
           <to xsi:type="tFormalExpression">_4_PriorityInput</to>
         </assignment>
       </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_MyContentIdOutput</sourceRef>
+        <targetRef>myContentId</targetRef>
+      </dataOutputAssociation>
       <potentialOwner>
         <resourceAssignmentExpression>
           <formalExpression>john</formalExpression>
