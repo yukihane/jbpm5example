@@ -98,6 +98,7 @@
     </userTask>
     <userTask id="_5" name="Approval" >
       <ioSpecification>
+        <dataInput id="_5_MyContentIdInput" name="myContentId" />
         <dataInput id="_5_CommentInput" name="Comment" />
         <dataInput id="_5_SkippableInput" name="Skippable" />
         <dataInput id="_5_ContentInput" name="Content" />
@@ -105,6 +106,7 @@
         <dataInput id="_5_GroupIdInput" name="GroupId" />
         <dataInput id="_5_PriorityInput" name="Priority" />
         <inputSet>
+          <dataInputRefs>_5_MyContentIdInput</dataInputRefs>
           <dataInputRefs>_5_CommentInput</dataInputRefs>
           <dataInputRefs>_5_SkippableInput</dataInputRefs>
           <dataInputRefs>_5_ContentInput</dataInputRefs>
@@ -115,6 +117,10 @@
         <outputSet>
         </outputSet>
       </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>myContentId</sourceRef>
+        <targetRef>_5_MyContentIdInput</targetRef>
+      </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_5_CommentInput</targetRef>
         <assignment>
