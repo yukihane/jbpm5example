@@ -66,10 +66,6 @@ public class MyKnowledgeBase {
 
         LocalTaskService lts = new LocalTaskService(taskService);
 
-        // deprecated だけれども5.3.0では代替クラスが無いので仕方ない
-        // http://stackoverflow.com/questions/10815779/local-human-task-service-jbpm
-        // https://community.jboss.org/thread/204619
-        // 5.4.0ではLocalHTWorkItemHandlerというものがあるのでこれを使う
         LocalHTWorkItemHandler humanTaskHandler = new MyHandler(lts, ksession);
         humanTaskHandler.setLocal(true);
         humanTaskHandler.connect();
