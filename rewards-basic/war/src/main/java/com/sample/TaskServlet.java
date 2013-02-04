@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jbpm.task.query.TaskSummary;
-
 import com.sample.TaskBean.MyTask;
 
 @WebServlet(urlPatterns="/task")

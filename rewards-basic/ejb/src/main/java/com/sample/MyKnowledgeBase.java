@@ -1,6 +1,5 @@
 package com.sample;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +8,6 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
-import org.apache.commons.exec.util.StringUtils;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
