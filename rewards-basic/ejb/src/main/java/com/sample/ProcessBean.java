@@ -1,7 +1,8 @@
 package com.sample;
 
-import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.local.LocalTaskService;
 
 import com.sample.MyKnowledgeBase.CommunicationPath;
@@ -64,12 +64,12 @@ public class ProcessBean implements ProcessLocal {
     private void completeTask(final LocalTaskService taskService,
             TaskSummary ts, String user, MyContent cont) {
         em.persist(cont);
+        final Map<String, Object> variables = new HashMap<String, Object>();
         final Long contId = cont.getId();
-        final byte[] bCont = BigInteger.valueOf(contId).toByteArray();
-        final ContentData cd = new ContentData();
-        cd.setContent(bCont);
+        // myContentId は rewards-basic.bpmn で定義しているプロセスインスタンス変数の名前
+        variables.put("myContentId", contId);
 
         taskService.start(ts.getId(), user);
-        taskService.complete(ts.getId(), user, cd);
+        taskService.completeWithResults(ts.getId(), user, variables);
     }
 }

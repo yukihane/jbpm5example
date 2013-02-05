@@ -1,6 +1,7 @@
 package com.sample;
 
-import java.math.BigInteger;
+import static com.sample.Constants.MY_CONTENT_ID;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jbpm.task.Content;
-import org.jbpm.task.Task;
+import org.drools.runtime.process.WorkflowProcessInstance;
 import org.jbpm.task.TaskService;
 import org.jbpm.task.query.TaskSummary;
 
+import com.sample.MyKnowledgeBase.CommunicationPath;
 import com.sample.entity.MyContent;
 
 @Stateless
@@ -28,7 +29,8 @@ public class TaskBean implements TaskLocal {
     @Override
     public List<MyTask> retrieveTaskList(String actorId) {
 
-        TaskService taskService = myKnowledgeBase.createCommunicationPath().getTaskService();
+        final CommunicationPath cp = myKnowledgeBase.createCommunicationPath();
+        final TaskService taskService = cp.getTaskService();
 
         List<TaskSummary> list = taskService
                 .getTasksAssignedAsPotentialOwner(actorId, "en-UK");
@@ -37,11 +39,11 @@ public class TaskBean implements TaskLocal {
         List<MyTask> tasks = new ArrayList<MyTask>();
         for (TaskSummary task : list) {
             System.out.println(" task.getId() = " + task.getId());
+            WorkflowProcessInstance pInstance = (WorkflowProcessInstance) cp
+                    .getKnowledgeSession().getProcessInstance(
+                            task.getProcessInstanceId());
 
-            final Task t = taskService.getTask(task.getId());
-            final long contentId = t.getTaskData().getDocumentContentId();
-            final Content cont = taskService.getContent(contentId);
-            final long myContId = new BigInteger(cont.getContent()).longValue();
+            final long myContId = (Long) pInstance.getVariable(MY_CONTENT_ID);
             final MyContent myCont = em.find(MyContent.class, myContId);
             tasks.add(new MyTask(task, myCont));
         }
@@ -75,7 +77,7 @@ public class TaskBean implements TaskLocal {
         System.out.println("approveTask (taskId = " + taskId + ") by " + actorId);
         taskClient.start(taskId, actorId);
         taskClient.complete(taskId, actorId, null);
-        
+
         return;
     }
 }
