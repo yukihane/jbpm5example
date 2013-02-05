@@ -27,7 +27,7 @@ for (MyTask mt : (List<MyTask>)request.getAttribute("taskList")) {
 <td><%= task.getActualOwner() %></td>
 <td><%= task.getCreatedBy() %></td>
 <td><%= task.getCreatedOn() %></td>
-<td><!-- %= mt.getContent().getMessage() % --></td>
+<td><%= mt.getContent().getMessage() %></td>
 <td><%= task.getName() %></td>
 <td><%= task.getId() %></td>
 <td><%= task.getProcessInstanceId() %></td>
