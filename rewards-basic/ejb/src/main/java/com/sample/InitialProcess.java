@@ -3,28 +3,43 @@ package com.sample;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.drools.SystemEventListenerFactory;
-import org.jbpm.task.User;
-import org.jbpm.task.service.TaskServiceSession;
+import com.sample.entity.MyServiceGroup;
+import com.sample.entity.MyServiceUser;
 
 @Startup
 @Singleton
 public class InitialProcess {
 
-    @PersistenceUnit(unitName = "org.jbpm.persistence.jpa")
-    private EntityManagerFactory emf;
+    @PersistenceContext(unitName = "org.jbpm.persistence.jpa")
+    private EntityManager em;
 
     @PostConstruct
     public void init() {
-        org.jbpm.task.service.TaskService taskService = new org.jbpm.task.service.TaskService(
-                emf, SystemEventListenerFactory.getSystemEventListener());
+        /*
+         * インメモリDBを用いたサンプルなので、起動時にDBへユーザを登録しておきます。1
+         */
+        /*
+         * jbpm-human-task-coreパッケージ内のTaskorm.xmlで定義されているNamedQuery
+         * "TasksAssignedAsPotentialOwnerWithGroups" をみると
+         * ユーザは必ずグループに所属している必要があるようなのでグループも設定します。
+         */
+        final MyServiceGroup group = new MyServiceGroup("onegroup");
+        em.persist(group);
 
-        TaskServiceSession taskSession = taskService.createSession();
-        taskSession.addUser(new User("Administrator"));
-        taskSession.addUser(new User("john"));
-        taskSession.addUser(new User("mary"));
+        MyServiceUser user = new MyServiceUser("Administrator");
+        user.setGroup(group);
+        em.persist(user);
+
+        user = new MyServiceUser("john");
+        user.setGroup(group);
+        em.persist(user);
+
+        user = new MyServiceUser("mary");
+        user.setGroup(group);
+        em.persist(user);
+
     }
 }
