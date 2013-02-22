@@ -30,8 +30,6 @@ public class ProcessServlet extends HttpServlet {
             final String loginUser = (String) req.getSession().getAttribute("loginName");
             final String message = req.getParameter("message");
             final String taskId = req.getParameter("taskId");
-//            final MyContent cont = new MyContent();
-//            cont.setMessage(message);
             
             processInstanceId = processService.editContent(loginUser, taskId, message);
         } catch (Exception e) {

@@ -72,11 +72,24 @@ public class ProcessBean implements ProcessLocal {
             final WorkflowProcessInstance pInstance = (WorkflowProcessInstance) ksession
                     .getProcessInstance(processInstanceId);
             final long myContentId = (Long) pInstance.getVariable(MY_CONTENT_ID);
-            final MyContent c = new MyContent();
-            c.setId(myContentId);
-            final MyContent myContent = em.find(MyContent.class, c);
+            final MyContent myContent = em.find(MyContent.class, myContentId);
             myContent.setMessage(message);
-            completeTask(taskService, taskId, user, myContentId);
+
+            sendSignalModify(cp, taskId);
+
+            List<TaskSummary> tasks = taskService
+                    .getTasksAssignedAsPotentialOwner(user, "en-UK");
+            boolean executed = false;
+            for (TaskSummary ts : tasks) {
+                if (ts.getProcessInstanceId() == processInstanceId) {
+                    completeTask(taskService, ts.getId(), user, myContentId);
+                    executed = true;
+                    break;
+                }
+            }
+            if (!executed) {
+                throw new IllegalStateException();
+            }
         }
         return processInstanceId;
     }
@@ -90,4 +103,12 @@ public class ProcessBean implements ProcessLocal {
         taskService.start(taskId, user);
         taskService.completeWithResults(taskId, user, variables);
     }
+
+    private void sendSignalModify(CommunicationPath cp, final long taskId) {
+        final long processInstanceId = cp.getTaskService().getTask(taskId)
+                .getTaskData().getProcessInstanceId();
+        cp.getKnowledgeSession().signalEvent("user modify", null,
+                processInstanceId);
+    }
+
 }

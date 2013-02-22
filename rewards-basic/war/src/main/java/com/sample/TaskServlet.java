@@ -40,9 +40,10 @@ public class TaskServlet extends HttpServlet {
             dispatcher.forward(req, res);
             return;
         } else if (cmd.equals("approve")) {
-            final String loginUser = (String) req.getSession().getAttribute("loginName");
+            final String loginUser = (String) req.getSession().getAttribute(
+                    "loginName");
+            final long taskId = Long.parseLong(req.getParameter("taskId"));
 
-            long taskId = Long.parseLong(req.getParameter("taskId"));
             try {
                 taskService.approveTask(loginUser, taskId);
             } catch (Exception e) {
@@ -55,7 +56,12 @@ public class TaskServlet extends HttpServlet {
                     .getRequestDispatcher("/index.jsp");
             dispatcher.forward(req, res);
             return;
-        }
+        } else if ("modify".equals(cmd)) {
+            ServletContext context = this.getServletContext();
+            RequestDispatcher dispatcher = context
+                    .getRequestDispatcher("/startProcess.jsp");
+            dispatcher.forward(req, res);
 
+        }
     }
 }

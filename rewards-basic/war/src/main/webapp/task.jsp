@@ -17,7 +17,8 @@
 <th>Task Name</th>
 <th>Task Id</th>
 <th>ProcessInstance Id</th>
-<th>Action</th>
+<th>Action(mary)</th>
+<th>Action(john)</th>
 </tr>
 <%
 for (MyTask mt : (List<MyTask>)request.getAttribute("taskList")) {
@@ -32,6 +33,7 @@ for (MyTask mt : (List<MyTask>)request.getAttribute("taskList")) {
 <td><%= task.getId() %></td>
 <td><%= task.getProcessInstanceId() %></td>
 <td><a href="task?user=<%= user %>&taskId=<%= task.getId() %>&cmd=approve">Approve</a></td>
+<td><a href="task?user=<%= user %>&taskId=<%= task.getId() %>&cmd=modify">Modify</a></td>
 </tr>
 <%
 }
