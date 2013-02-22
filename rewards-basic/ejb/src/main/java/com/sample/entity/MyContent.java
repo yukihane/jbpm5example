@@ -28,6 +28,10 @@ public class MyContent implements Serializable {
         return id;
     }
 
+    public void setId(long myContentId) {
+        this.id = myContentId;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -59,5 +63,4 @@ public class MyContent implements Serializable {
         }
         return super.equals(obj);
     }
-
 }
