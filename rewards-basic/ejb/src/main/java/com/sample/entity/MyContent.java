@@ -59,5 +59,4 @@ public class MyContent implements Serializable {
         }
         return super.equals(obj);
     }
-
 }

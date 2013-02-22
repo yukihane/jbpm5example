@@ -8,7 +8,7 @@
 <p><%= request.getAttribute("message") == null ? "" : request.getAttribute("message") %></p>
 <ul>
 <li><a href="startProcess.jsp">Create New Content (John's task)</a></li>
-<li><a href="task?user=mary&cmd=list">Approval (Mary's Task)</a></li>
+<li><a href="task?user=mary&cmd=list">Approval (Mary's Task) or Modify(John's Task)</a></li>
 </ul>
 </body>
 </html>
