@@ -34,7 +34,7 @@ public class ProcessBean implements ProcessLocal {
 
         // start a new process instance
         ProcessInstance processInstance = ksession
-                .startProcess("com.sample.rewards-basic");
+                .startProcess("defaultPackage.rewards-basic");
         long processInstanceId = processInstance.getId();
 
         final LocalTaskService taskService = cp.getTaskService();

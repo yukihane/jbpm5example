@@ -41,7 +41,7 @@ public class MyKnowledgeBase {
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
                 .newKnowledgeBuilder();
         kbuilder.add(
-                ResourceFactory.newClassPathResource("rewards-basic.bpmn"),
+                ResourceFactory.newClassPathResource("rewards-basic.bpmn2"),
                 ResourceType.BPMN2);
         kbase = kbuilder.newKnowledgeBase();
     }
