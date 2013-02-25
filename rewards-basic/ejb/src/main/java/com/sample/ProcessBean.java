@@ -10,11 +10,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.drools.runtime.process.ProcessInstance;
-import org.drools.runtime.process.WorkflowProcessInstance;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.kie.runtime.StatefulKnowledgeSession;
+import org.kie.runtime.process.ProcessInstance;
+import org.kie.runtime.process.WorkflowProcessInstance;
 
 import com.sample.MyKnowledgeBase.CommunicationPath;
 import com.sample.entity.MyContent;

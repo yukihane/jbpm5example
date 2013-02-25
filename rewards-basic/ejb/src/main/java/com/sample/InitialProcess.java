@@ -6,9 +6,9 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
-import org.drools.SystemEventListenerFactory;
 import org.jbpm.task.User;
 import org.jbpm.task.service.TaskServiceSession;
+import org.kie.SystemEventListenerFactory;
 
 @Startup
 @Singleton
