@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sample.entity.MyContent;
-
 @WebServlet(urlPatterns="/process")
 public class ProcessServlet extends HttpServlet {
 
