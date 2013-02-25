@@ -109,7 +109,7 @@ public class MyWorkItemHandler extends LocalHTWorkItemHandler {
 
         task.setTaskData(taskData);
 
-        PeopleAssignmentHelper peopleAssignmentHelper = new PeopleAssignmentHelper();
+        PeopleAssignmentHelper peopleAssignmentHelper = new MyPeopleAssignmentHelper();
         peopleAssignmentHelper
                 .handlePeopleAssignments(workItem, task, taskData);
 
