@@ -10,9 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.drools.runtime.process.WorkflowProcessInstance;
 import org.jbpm.task.TaskService;
 import org.jbpm.task.query.TaskSummary;
+import org.kie.runtime.process.WorkflowProcessInstance;
 
 import com.sample.MyKnowledgeBase.CommunicationPath;
 import com.sample.entity.MyContent;

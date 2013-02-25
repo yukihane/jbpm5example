@@ -8,24 +8,25 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.SystemEventListenerFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.io.ResourceFactory;
-import org.drools.persistence.jpa.JPAKnowledgeService;
-import org.drools.runtime.Environment;
-import org.drools.runtime.EnvironmentName;
-import org.drools.runtime.KnowledgeRuntime;
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemManager;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.service.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.kie.KieBase;
+import org.kie.KnowledgeBase;
+import org.kie.KnowledgeBaseFactory;
+import org.kie.SystemEventListenerFactory;
+import org.kie.builder.KnowledgeBuilder;
+import org.kie.builder.KnowledgeBuilderFactory;
+import org.kie.io.ResourceFactory;
+import org.kie.io.ResourceType;
+import org.kie.persistence.jpa.JPAKnowledgeService;
+import org.kie.runtime.Environment;
+import org.kie.runtime.EnvironmentName;
+import org.kie.runtime.KnowledgeRuntime;
+import org.kie.runtime.StatefulKnowledgeSession;
+import org.kie.runtime.process.WorkItem;
+import org.kie.runtime.process.WorkItemManager;
 
 @Singleton
 @Startup
@@ -48,10 +49,15 @@ public class MyKnowledgeBase {
 
     private StatefulKnowledgeSession createKnowledgeSession() {
         Environment env = KnowledgeBaseFactory.newEnvironment();
-        env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
+        // FIXME knowledge-apiとkie-apiそれぞれ別のorg.kie.runtime.EnvironmentNameが定義されている
+//        env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, emf);
+        env.set("org.kie.persistence.jpa.EntityManagerFactory", emf);
+        env.set("drools.persistence.jpa.EntityManagerFactory", emf);
 
+        // FIXME 現時点でのsnapshotバージョンではKieBaseにキャストする必要がある？
+        // https://issues.jboss.org/browse/DROOLS-34 で解消？
         StatefulKnowledgeSession ksession = JPAKnowledgeService
-                .newStatefulKnowledgeSession(kbase, null, env);
+                .newStatefulKnowledgeSession((KieBase)kbase, null, env);
 
         new JPAWorkingMemoryDbLogger(ksession);
 
